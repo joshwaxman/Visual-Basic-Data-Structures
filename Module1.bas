@@ -27,14 +27,34 @@ Sub Main()
     
     Dim c As Collection
     Set c = UF.ListConnected(2)
-    Debug.Print c.count '
+    Debug.Print c.Count '
     
     Set c = UF.ListConnected(3)
-    Debug.Print c.count
+    Debug.Print c.Count
     
     Debug.Print UF.ComponentSize(2)
 End Sub
 
+
+Sub TestMaxPriorityQueue()
+    Dim q As New MaxPriorityQueue
+    
+    q.Insert 6, 6
+    q.Insert 7, 7
+    q.Insert 2, 2
+    q.Insert 4, 4
+    q.Insert 14, "boo"
+    
+    Dim d As Variant
+    d = q.RemoveMax
+    Debug.Print d
+    
+    d = q.RemoveMax
+    Debug.Print d
+    
+    d = q.RemoveMax
+    Debug.Print d
+End Sub
 
 Sub TestStack()
     Dim s As New Stack
