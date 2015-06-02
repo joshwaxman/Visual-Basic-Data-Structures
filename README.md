@@ -26,4 +26,5 @@ At the moment, the following Data Structures are provided:
 2. Queue
 3. Stack
 4. MaxPriorityQueue
+5. RandomQueue
 
