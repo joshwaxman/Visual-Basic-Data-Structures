@@ -38,7 +38,7 @@ End Sub
 
 Sub TestMaxPriorityQueue()
     Dim q As New MaxPriorityQueue
-    
+
     q.Insert 6, 6
     q.Insert 7, 7
     q.Insert 2, 2
@@ -64,7 +64,18 @@ Sub TestStack()
     Dim v As Object
     Set v = s.Pop
     Debug.Print v
+End Sub
 
-
-
+Sub TestRandomQueue()
+    Dim i As Long, v As Long
+    Dim rq As New RandomQueue
+    For i = 1 To 100
+        rq.Enqueue i
+    Next i
+    
+    While rq.Count <> 0
+        v = rq.Dequeue
+        Debug.Print v
+    Wend
+    
 End Sub
