@@ -35,6 +35,25 @@ Sub Main()
     Debug.Print UF.ComponentSize(2)
 End Sub
 
+Sub TestQueue()
+    Dim q As New Queue
+    Dim i As Long
+    q.Enqueue 1
+    q.Enqueue 2
+    
+    q.Dequeue
+    
+    For i = 3 To 12
+        q.Enqueue i
+    Next i
+    
+    Dim v As Variant
+    While q.Count <> 0
+        v = q.Dequeue
+        Debug.Print v
+    Wend
+End Sub
+
 
 Sub TestMaxPriorityQueue()
     Dim q As New MaxPriorityQueue

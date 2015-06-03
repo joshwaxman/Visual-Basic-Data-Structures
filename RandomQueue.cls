@@ -44,10 +44,27 @@ Private Sub Class_Initialize()
     start_element = 0
 End Sub
 
+Private Sub Resize()
+    Dim target() As Variant
+    ReDim target(item_count * 2)
+    
+    Dim i As Long, source_index As Long, target_index As Long
+    source_index = start_element
+    
+    While i < item_count
+        AssignFromPosition target(i), source_index
+        i = i + 1
+        source_index = (source_index + 1) Mod (UBound(arr) + 1)
+    Wend
+    
+    start_element = 0
+    arr = target
+End Sub
+
 Public Sub Enqueue(v As Variant)
     ' if item_count is beyond the bounds of the array, then double it
     If item_count > UBound(arr) Then
-        ReDim Preserve arr(item_count * 2)
+        Resize
     End If
     
     ' wrap around the circular array

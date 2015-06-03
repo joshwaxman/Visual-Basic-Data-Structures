@@ -33,10 +33,43 @@ Private Sub Class_Initialize()
     start_element = 0
 End Sub
 
+Private Sub Resize()
+    Dim target() As Variant
+    ReDim target(item_count * 2)
+    
+    Dim i As Long, source_index As Long, target_index As Long
+    source_index = start_element
+    
+    While i < item_count
+        AssignFromPosition target(i), source_index
+        i = i + 1
+        source_index = (source_index + 1) Mod (UBound(arr) + 1)
+    Wend
+    
+    start_element = 0
+    arr = target
+End Sub
+
+Private Sub AssignFromPosition(ByRef v As Variant, ByVal position As Long)
+    If VarType(arr(position)) = vbObject Then
+        Set v = arr(position)
+    Else
+        v = arr(position)
+    End If
+End Sub
+
+Private Sub AssignToPosition(ByVal position As Long, ByVal v As Variant)
+    If VarType(v) = vbObject Then
+        Set arr(position) = v
+    Else
+        arr(position) = v
+    End If
+End Sub
+
 Public Sub Enqueue(v As Variant)
     ' if item_count is beyond the bounds of the array, then double it
     If item_count > UBound(arr) Then
-        ReDim Preserve arr(item_count * 2)
+        Resize
     End If
     
     ' wrap around the circular array
@@ -60,23 +93,17 @@ Public Function Dequeue() As Variant
         
     ' wrap around the circular array
     Dim position As Long
-    position = start_element + item_count - 1
-    If position = -1 Then
-        position = UBound(arr)
-    End If
+    position = start_element
     
-    If VarType(arr(position)) = vbObject Then
-        Set Dequeue = arr(position)
-    Else
-        Dequeue = arr(position)
-    End If
+    AssignFromPosition Dequeue, position
     
-    Set arr(position) = Nothing
+    arr(position) = Empty
+    start_element = (start_element + 1) Mod (UBound(arr) + 1)
     item_count = item_count - 1
 End Function
 
-Public Function count() As Long
-    count = item_count
+Public Function Count() As Long
+    Count = item_count
 End Function
 
 Public Function Peek() As Variant
@@ -100,13 +127,13 @@ End Function
 
 Public Function ToCollection() As Collection
     Dim c As New Collection
-    Dim i As Long, count As Long
+    Dim i As Long, Count As Long
     
     i = start_element
-    While count < item_count
+    While Count < item_count
         c.Add arr(i)
         i = (i + 1) Mod (UBound(arr) + 1)
-        count = count + 1
+        Count = Count + 1
     Wend
     
     Set ToCollection = c
@@ -116,12 +143,12 @@ End Function
 Public Function ToArray() As Variant()
     Dim c As Collection
     Set c = ToCollection
-    If c.count = 0 Then
+    If c.Count = 0 Then
         Exit Function
     End If
     
     Dim retVal() As Variant
-    ReDim retVal(c.count - 1)
+    ReDim retVal(c.Count - 1)
     Dim v As Variant, i As Long
     
     For Each v In c
