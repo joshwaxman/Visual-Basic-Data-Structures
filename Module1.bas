@@ -96,5 +96,12 @@ Sub TestRandomQueue()
         v = rq.Dequeue
         Debug.Print v
     Wend
+End Sub
+
+Sub TestLinkedList()
+    Dim list As New LinkedList
+    list.InsertFront 5
+    list.InsertFront 6
     
+    list.PrintList
 End Sub
